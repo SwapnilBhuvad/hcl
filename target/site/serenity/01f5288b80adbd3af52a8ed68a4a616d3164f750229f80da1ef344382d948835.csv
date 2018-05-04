@@ -1,0 +1,5 @@
+"Story","Title","Result","Date","Stability","Duration (s)"
+"Request Car Insurance","Successful request1","SUCCESS","2018-05-04T04:07:49.991+02:00[Europe/Berlin]","0.0","25.21"
+"Request Car Insurance","Successful request2","SUCCESS","2018-05-04T04:08:15.204+02:00[Europe/Berlin]","0.0","16.98"
+"Request Car Insurance","Successful request3","SUCCESS","2018-05-04T04:08:32.187+02:00[Europe/Berlin]","0.0","27.68"
+"Request Car Insurance","Negative scenario1","SUCCESS","2018-05-04T04:08:59.872+02:00[Europe/Berlin]","0.0","19.16"
