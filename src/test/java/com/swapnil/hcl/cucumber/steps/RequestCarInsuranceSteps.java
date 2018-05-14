@@ -13,8 +13,7 @@ public class RequestCarInsuranceSteps extends ScenarioSteps{
 	@Step
 
 	public void openPortal() {
-		// TODO Auto-generated method stub
-		
+				
 		homePage.open_URL();
 		
 	}
@@ -30,6 +29,16 @@ public class RequestCarInsuranceSteps extends ScenarioSteps{
 		homePage.enterPostcode(homePageDataProvider);
 		homePage.houseNumber(homePageDataProvider);
 		homePage.livingSituation(homePageDataProvider);
+		
+	}
+	
+	public void enterDetailsErr(HomePageData homePageDataProvider) {
+		
+		
+		homePage.enterLicensePlate(homePageDataProvider);
+		homePage.enterDamageFreeYears(homePageDataProvider);
+		homePage.enterBirthDate(homePageDataProvider);
+		
 		
 	}
 
@@ -63,14 +72,28 @@ public class RequestCarInsuranceSteps extends ScenarioSteps{
 
 
 
-	public void validateCarNumber(HomePageData homePageDataProvider) throws InterruptedException {
+	
+
+	public void requestARCoverage(HomePageData homePageDataProvider) throws InterruptedException {
 		// TODO Auto-generated method stub
-		homePage.validateCarNumber();
+		homePage.requestARCoverage();
 	}
 
 
 
-	
+	public void enterDetailsErr2(HomePageData homePageDataProvider) throws InterruptedException {
+		// TODO Auto-generated method stub
+		homePage.enterLicensePlate(homePageDataProvider);
+		
+	}
+
+
+
+	public void validateCarNumber(HomePageData homePageDataProvider) {
+		// TODO Auto-generated method stub
+		homePage.validateCarNumber();
+	}
+
 	
 	
 }

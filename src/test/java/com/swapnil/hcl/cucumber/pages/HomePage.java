@@ -1,5 +1,15 @@
 package com.swapnil.hcl.cucumber.pages;
 
+
+import static org.junit.Assert.assertTrue;
+
+import java.sql.Driver;
+
+
+import org.junit.Assert;
+import org.openqa.selenium.Keys;
+
+import com.fasterxml.classmate.util.ResolvedTypeCache.Key;
 import com.swapnil.hcl.cucumber.model.HomePageData;
 
 import net.serenitybdd.core.annotations.findby.FindBy;
@@ -39,11 +49,21 @@ public class HomePage extends GenericPageObject {
 	@FindBy(css="#CAR > div.knx-recommended.hidden-xs")
 	private WebElementFacade AR_Locator;
 	
-	@FindBy(xpath="/html/body/knx-app/div/ng-component/div[3]/knx-wizard-rx/div/div[2]/div/knx-car-detail-form/knx-wizard-controls/div/div[1]")
-	private WebElementFacade Error_locator;
+	@FindBy(css="#carDetailForm > div:nth-child(1) > div > knx-card:nth-child(2) > div > div:nth-child(2) > div > knx-form-group.knx-form-group--error::after > div")
+	private WebElementFacade dateError_locator;
+	
+	@FindBy(css="#carDetailForm > div:nth-child(1) > div > knx-card:nth-child(1) > div > div:nth-child(2) > div > knx-form-group.knx-form-group--error::after > div")
+	private WebElementFacade carError_locator;
 	
 	@FindBy(xpath="//*[<div _ngcontent-c18=\"\" class=\"col\">Merk</div>")
-	private WebElementFacade CarInfo_locator;
+	private WebElementFacade carInfo_locator;
+	
+	@FindBy(xpath="//div[@class='row knx-address-lookup__result']/div/knx-async-preview/div/span")
+	private WebElementFacade address_locator;
+	
+	
+	@FindBy(css="body > knx-app > div > ng-component > div.container.knx-car-advice.knx-car-advice--step-1 > knx-wizard-rx > div > div.col-sm-4.push-sm-8 > div > knx-chat-stream > div > div:nth-child(3) > knx-chat-message > div > div")
+	private WebElementFacade insuranceOverview_locator;
 	
 	public void open_URL() {
 		// TODO Auto-generated method stub
@@ -57,6 +77,7 @@ public class HomePage extends GenericPageObject {
 	public void enterLicensePlate(HomePageData homePageDataProvider) {
 		// TODO Auto-generated method stub
 		licensePlate_locator.sendKeys(homePageDataProvider.getLicensePlateNumber());
+		licensePlate_locator.sendKeys(Keys.TAB);
 		
 	}
 
@@ -101,6 +122,7 @@ public class HomePage extends GenericPageObject {
 	public void houseNumber(HomePageData homePageDataProvider) {
 		// TODO Auto-generated method stub
 		houseNumber_locator.sendKeys(homePageDataProvider.getHouseNumber());
+		address_locator.waitUntilPresent();
 	}
 
 
@@ -116,63 +138,103 @@ public class HomePage extends GenericPageObject {
 	
 	public void insuranceCoverageWA() {
 		
-				
+		try {		
 		if( WA_locator.isDisplayed()){
-			System.out.println("WA Insurance coverage is offered, Testcase Passed");
-			}else{
-			System.out.println("WA Insurance coverage is not offered, Testcase Failed");
-			}
-		
+			String ActualMessageWA = insuranceOverview_locator.getText();
+			String ExpectedMessageWA = "Met een WA dekking is alleen de schade die jij toebrengt aan anderen gedekt. Schade aan je eigen auto moet je dus zelf betalen. Deze dekking is verstandig voor auto's ouder dan 10 jaar.";
+			Assert.assertEquals(ExpectedMessageWA,ActualMessageWA);
+		}
+		}
+		catch(Exception e) {
+			System.out.println("Exception Occurred");
+		}
 	}
 
 
 
 	public void insuranceCoverageAR() {
 		// TODO Auto-generated method stub
+		try {
 		if( AR_Locator.isDisplayed()){
-			System.out.println("All Risk Insurance coverage is offered, Testcase Passed");
-			}else{
-			System.out.println("All Risk Insurance coverage is not offered, Testcase Failed");
-			}
+			
+			String ActualMessageAR= insuranceOverview_locator.getText();
+			String ExpectedMessageAR = "Heb je een nieuwe auto van maximaal 6 jaar oud, of heb je een lening afgesloten voor je auto? Dan raad ik je Allrisk aan. Als je auto onherstelbaar beschadigd raakt, krijg je een vergoeding om een nieuwe te kopen. Bij een andere dekking krijg je deze vergoeding niet.";
+			
+			Assert.assertEquals(ExpectedMessageAR,ActualMessageAR);
+		}
+		}
+		catch(Exception e) {
+			System.out.println("Exception Occurred");
+		}
 	}
 
 
 
 	public void requestWACoverage() throws InterruptedException {
 		// TODO Auto-generated method stub
+		
 		if(WA_locator.isDisplayed()==true) {
+			Thread.sleep(5000);
 			WA_locator.click();
 			Thread.sleep(10000);
 		}
+		
+		
 	}
 
 
 
 	public void validateAge() {
 		// TODO Auto-generated method stub
-		WA_locator.click();
-		if(Error_locator.isDisplayed()==true) {
-			System.out.println("Error is displayed, Negative Testcase is passed");
+		
+		if(dateError_locator.isVisible()==true) {
+			
+			String ActualError = dateError_locator.getText();
+			String ExpectedError = "De ingevulde geboortedatum is niet geldig";
+			
+			Assert.assertEquals(ExpectedError,ActualError);
 		}
-		else {
-			System.out.println("Error is not displayed, Negative Testcase is failed");
-		}
+		
 		
 	}
 
 
 
-	public void validateCarNumber() throws InterruptedException {
+	
+
+	public void requestARCoverage() throws InterruptedException {
 		// TODO Auto-generated method stub
-		Thread.sleep(5000);
-		if(CarInfo_locator.isDisplayed()==false) {
-			System.out.println("Car details are not fetched, negative testcase is passed");
+		AR_Locator.waitUntilVisible();
+		AR_Locator.click();
+		
+		/*if(AR_Locator.isDisplayed()==true) {
+			Thread.sleep(5000);
+			AR_Locator.click();
+			Thread.sleep(10000);
+		}*/
+	}
+
+
+
+	public void validateCarNumber() {
+		// TODO Auto-generated method stub
+		
+			if(carError_locator.isVisible()==true) {
 			
-		}
-		else {
-			System.out.println("Negative testcase is failed");
+			String ActualError = carError_locator.getText();
+			String ExpectedError = "Het ingevulde kenteken is niet geregistreerd";
+			
+			Assert.assertEquals(ExpectedError,ActualError);
 		}
 	}
+
+
+
+	
+
+
+
+	
 
 
 
